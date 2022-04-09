@@ -82,6 +82,115 @@ router.delete('/delResult/:id',auth,validationEditResult, addResultValidation, d
  *        responses:
  *          201:
  *            description: User created
+ *
+ * /login:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: user
+ *        schema:
+ *          type: object
+ *          required:
+ *            - email
+ *            - password
+ *          properties:
+ *            email:
+ *              type: string
+ *              example: email@email.com
+ *            password:
+ *              type: string
+ *              example: password12345
+ *          responses:
+ *            200:
+ *              description: User logged in
+ * /addStudent:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: student
+ *        schema:
+ *          type: object
+ *          required:
+ *            - first_name
+ *            - last_name
+ *            - email
+ *          properties:
+ *            email:
+ *              type: string
+ *              example: email@email.com
+ *            last_name:
+ *              type: string
+ *              example: last_name
+ *            first_name:
+ *              type: string
+ *              example: first_name
+ *          responses:
+ *              201:
+ *                description: Student created
+ * /addEvaluation:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: Evaluation
+ *        schema:
+ *          type: object
+ *          required:
+ *            - name
+ *          properties:
+ *            name:
+ *              type: string
+ *              example: last_name
+ *          responses:
+ *              201:
+ *                description: Student created
+ * /addResult:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: student
+ *        schema:
+ *          type: object
+ *          required:
+ *            - student_id
+ *            - eval_id
+ *            - note
+ *          properties:
+ *            student_id:
+ *              type: string
+ *              example: 1
+ *            eval_id:
+ *              type: string
+ *              example: 1
+ *            note:
+ *              type: integer
+ *              example: 100
+ *          responses:
+ *              201:
+ *                description: Student created
+ *                /addResult:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: student
+ *        schema:
+ *          type: object
+ *          required:
+ *            - student_id
+ *            - eval_id
+ *            - note
+ *          properties:
+ *            student_id:
+ *              type: string
+ *              example: 1
+ *            eval_id:
+ *              type: string
+ *              example: 1
+ *            note:
+ *              type: integer
+ *              example: 100
+ *          responses:
+ *              201:
+ *                description: Student created
  */
 const server = app.listen(port, () => {
     console.log(`L'API peut maintenant recevoir des requêtes http://localhost:` + port);
