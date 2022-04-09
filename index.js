@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+require("dotenv").config()
 
 const app = express();
 const router = express.Router();
@@ -10,6 +11,7 @@ router.use(bodyParser.json());
 
 app.use(router)
 
+const auth = require("./middleware/auth");
 const {validateUserSignUp, registerValidation, validateUserLogin, loginValidation} = require("./middleware/validation/user");
 const {registerUser, loginUser} = require("./controllers/user");
 const {validationAddStudent, addStudentValidation, validationEditStudent} = require("./middleware/validation/student");
@@ -23,16 +25,16 @@ const {addResult, editResult} = require("./controllers/results");
 router.post('/signup', validateUserSignUp, registerValidation, registerUser) //Créer la route qui permet d’enregistrer un utilisateur (http://localhost:3000/signup)
 router.post('/login',validateUserLogin,loginValidation,loginUser) //Créer la route qui permet de se connecter (http://localhost:3000/login)
 router.post('/addStudent',validationAddStudent,addStudentValidation,addStudent) //Créer la route qui permet d’ajouter un étudiant (http://localhost:3000/addStudent)
-router.post('/addEvaluation',validationAddEvaluation, addEvalValidation, addEval) //Créer la route qui permet d’ajouter une évaluation (http://localhost:3000/addEvaluation)
-router.post('/addResult',validationAddResult, addResultValidation, addResult) //Créer la route qui permet d’ajouter un résultat (http://localhost:3000/addResult)
+router.post('/addEvaluation',auth,validationAddEvaluation, addEvalValidation, addEval) //Créer la route qui permet d’ajouter une évaluation (http://localhost:3000/addEvaluation)
+router.post('/addResult',auth,validationAddResult, addResultValidation, addResult) //Créer la route qui permet d’ajouter un résultat (http://localhost:3000/addResult)
 
-router.put('/editStudent/:id',validationAddStudent,addStudentValidation, editStudent) //Créer la route qui permet de modifier un étudiant (http://localhost:3000/editStudent/:id)
-router.put('/editEvaluation/:id',validationAddEvaluation, addEvalValidation, editEvaluation) //Créer la route qui permet de modifier une évaluation (http://localhost:3000/editEvaluation/:id)
-router.put('/editResult/:id',validationEditResult, addResultValidation, editResult) //Créer la route qui permet de modifier un résultat (http://localhost:3000/editResult/:id)
+router.put('/editStudent/:id',auth,validationAddStudent,addStudentValidation, editStudent) //Créer la route qui permet de modifier un étudiant (http://localhost:3000/editStudent/:id)
+router.put('/editEvaluation/:id',auth,validationAddEvaluation, addEvalValidation, editEvaluation) //Créer la route qui permet de modifier une évaluation (http://localhost:3000/editEvaluation/:id)
+router.put('/editResult/:id',auth,validationEditResult, addResultValidation, editResult) //Créer la route qui permet de modifier un résultat (http://localhost:3000/editResult/:id)
 
-router.delete('/delStudent/:id',validationEditStudent, addStudentValidation, deleteStudent) //Créer la route qui permet de supprimer un étudiant (http://localhost:3000/delStudent/:id)
-router.delete('/delEvaluation/:id', validationEditEvaluation, addEvalValidation, deleteStudent) //Créer la route qui permet de supprimer une évaluation (http://localhost:3000/delEvaluation/:id)
-router.delete('/delResult/:id', validationEditResult, addResultValidation, deleteStudent) //Créer la route qui permet de supprimer un résultat (http://localhost:3000/delResult/:id)
+router.delete('/delStudent/:id',auth,validationEditStudent, addStudentValidation, deleteStudent) //Créer la route qui permet de supprimer un étudiant (http://localhost:3000/delStudent/:id)
+router.delete('/delEvaluation/:id',auth,validationEditEvaluation, addEvalValidation, deleteStudent) //Créer la route qui permet de supprimer une évaluation (http://localhost:3000/delEvaluation/:id)
+router.delete('/delResult/:id',auth,validationEditResult, addResultValidation, deleteStudent) //Créer la route qui permet de supprimer un résultat (http://localhost:3000/delResult/:id)
 
 //TODO : Documenter l'API
 const server = app.listen(port, () => {
