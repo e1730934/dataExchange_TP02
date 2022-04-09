@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 require("dotenv").config()
 
 const app = express();
@@ -21,6 +23,23 @@ const {addEval, editEvaluation} = require("./controllers/evaluation");
 const {validationAddResult, addResultValidation, validationEditResult} = require("./middleware/validation/results");
 const {addResult, editResult} = require("./controllers/results");
 
+const swaggerOptions = {
+    swaggerDefinition : {
+        info: {
+            title: "TP02 API",
+            description: "TP02 API",
+            contact: {
+                name: "Bilal Khendaf"
+            },
+            servers: ["http://localhost:3000"]
+        }
+    },
+    apis: ["index.js"]
+}
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 
 router.post('/signup', validateUserSignUp, registerValidation, registerUser) //Créer la route qui permet d’enregistrer un utilisateur (http://localhost:3000/signup)
 router.post('/login',validateUserLogin,loginValidation,loginUser) //Créer la route qui permet de se connecter (http://localhost:3000/login)
@@ -37,6 +56,33 @@ router.delete('/delEvaluation/:id',auth,validationEditEvaluation, addEvalValidat
 router.delete('/delResult/:id',auth,validationEditResult, addResultValidation, deleteStudent) //Créer la route qui permet de supprimer un résultat (http://localhost:3000/delResult/:id)
 
 //TODO : Documenter l'API
+/**
+ * @swagger
+ * /signup:
+ *   post:
+ *     parameters:
+ *      - in: body
+ *        name: user
+ *        schema:
+ *          type: object
+ *          required:
+ *            - email
+ *            - password
+ *            - name
+ *          properties:
+ *            email:
+ *              type: string
+ *              example: email@email.com
+ *            password:
+ *              type: string
+ *              example: password12345
+ *            name:
+ *              type: string
+ *              example: name
+ *        responses:
+ *          201:
+ *            description: User created
+ */
 const server = app.listen(port, () => {
     console.log(`L'API peut maintenant recevoir des requêtes http://localhost:` + port);
 });
