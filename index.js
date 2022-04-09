@@ -5,6 +5,8 @@ const db = new sqlite3.Database('./database/school.sqlite3');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const {validateUserSignUp, registerValidation} = require("./middleware/validation/user");
+const {registerUser} = require("./controllers/user");
 
 const app = express();
 const router = express.Router();
@@ -14,27 +16,7 @@ router.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
 
-router.post('/signup', (req, res) => {
-    //Créer la route qui permet d’enregistrer un utilisateur (http://localhost :3000/signup)
-    // - Le champ (nom) ne peut pas être vide et ne peut pas contenir moins de 5 caractères et plus de 50 caractères.
-    // - Le champ (email) doit être valide.
-    // - Le champ (password) doit être encrypter avant son enregistrement dans la base de données.
-    //TODO: Vérifier les conditions de validation
-    const {nom, email, password} = req.body;
-    const hash = bcrypt.hashSync(password, 10);
-    db.run('INSERT INTO users (nom, email, password) VALUES (?, ?, ?)', [nom, email, hash], (err) => {
-        if (err) {
-            res.status(500).json({
-                error: err.message
-            });
-        } else {
-            res.status(201).json({
-                message: 'Utilisateur créé'
-            });
-        }
-    });
-    db.close();
-});
+router.post('/signup', validateUserSignUp, registerValidation, registerUser) //Créer la route qui permet d’enregistrer un utilisateur (http://localhost :3000/signup)
 
 router.post('/login', (req, res) => {
     //Créer la route qui permet de se connecter (http://localhost :3000/login)
@@ -42,7 +24,7 @@ router.post('/login', (req, res) => {
     // - Le champ (password) doit être encrypter avant son enregistrement dans la base de données.
     // - Générer un token qui expire après 4heures.
     const {email, password} = req.body;
-    db.get('SELECT * FROM users WHERE email = ?', [email], (err, row) => {
+    db.get('SELECT * FROM user WHERE email = ?', [email], (err, row) => {
         if (err) {
             res.status(500).json({
                 error: err.message
