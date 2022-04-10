@@ -4,8 +4,8 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database/school.sqlite3');
 
 exports.addStudent = async (req,res) => {
-    const {first_name, last_name, email} = req.body;
-    if(!req.body instanceof Array) {
+    if(!Array.isArray(req.body)) {
+        const {first_name, last_name, email} = req.body;
         db.run('INSERT INTO students (first_name, last_name, email) VALUES (?, ?, ?)', [first_name, last_name, email], (err) => {
             if (err) {
                 res.status(500).json({

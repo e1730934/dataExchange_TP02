@@ -35,7 +35,10 @@ exports.registerValidation= (req, res, next) =>{
     if(!result.length){
         next()
     }   const error = result.filter(err => err.msg).map(err => err.msg)
-    console.log(error) //TODO: FIX THIS
+    res.json({
+        success: false,
+        message: error
+    })
 
 }
 exports.loginValidation = (req, res, next) =>{
@@ -43,6 +46,11 @@ exports.loginValidation = (req, res, next) =>{
     if(!result.length){
         next()
     }   const error = result.filter(err => err.msg).map(err => err.msg)
-    console.log(error) //TODO: FIX THIS
+    if(error.length>0){
+        res.json({
+            success: false,
+            message: error
+        })
+    }
 }
 

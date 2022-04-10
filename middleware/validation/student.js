@@ -39,5 +39,10 @@ exports.addStudentValidation = (req, res, next) =>{
     if(!result.length){
         next()
     }   const error = result.filter(err => err.msg).map(err => err.msg)
-    console.log(error) //TODO: FIX THIS
+    if(error.length>0){
+        res.json({
+            success: false,
+            message: error
+        })
+    }
 }

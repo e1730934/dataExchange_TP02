@@ -4,25 +4,27 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database/school.sqlite3');
 
 exports.addEval = async (req,res) => {
-    if(!req.body instanceof Array) {
+    if(!Array.isArray(req.body)) {
         const {name} = req.body;
-        if (db.run('SELECT * FROM evaluation WHERE name = ?', [name]) !== 0) {
-            res.status(400).json({
-                message: "Evaluation already exists"
-            });
-        } else {
-            db.run('INSERT INTO evaluation (name) VALUES (?)', [name], (err) => {
-                if (err) {
-                    res.status(500).json({
-                        error: err.message
-                    });
-                } else {
-                    res.status(201).json({
-                        message: 'Évaluation créée'
-                    });
-                }
-            });
-        }
+        db.get(`SELECT COUNT(*) FROM evaluation WHERE name= ${name}`, function(error, row) {
+            if(row) {
+                res.status(400).json({
+                    message: "Evaluation already exists"
+                })
+            } else {
+                db.run('INSERT INTO evaluation (name) VALUES (?)', [name], function(error) {
+                    if(error) {
+                        res.status(400).json({
+                            message: error.message
+                        })
+                    } else {
+                        res.status(201).json({
+                            message: 'Évaluation créée'
+                        })
+                    }
+                })
+            }
+        })
     }else{
         const evaluations = req.body;
         evaluations.forEach(evaluation => {

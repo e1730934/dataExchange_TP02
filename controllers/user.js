@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database/school.sqlite3');
+require("dotenv").config();
 
 exports.registerUser = async (req,res) => {
     const {name, email, password} = req.body;
@@ -50,7 +51,7 @@ exports.loginUser = async (req,res) =>{
                     id: row.id,
                     nom: row.nom,
                     email: row.email
-                }, 'secret', {
+                }, process.env.TOKEN_KEY, {
                     expiresIn: '4h'
                 });
                 res.status(200).json({
