@@ -29,22 +29,21 @@ exports.addEval = async (req,res) => {
         const evaluations = req.body;
         evaluations.forEach(evaluation => {
             if (db.run('SELECT * FROM evaluation WHERE name = ?', [evaluation.name]) !== 0) {
-                res.status(400).json({
-                    message: "Evaluation already exists"
-                });
+                console.log( evaluation.name+ ': Evaluation already exists');
             } else {
                 db.run('INSERT INTO evaluation (name) VALUES (?)', [evaluation.name], (err) => {
                     if (err) {
-                        res.status(500).json({
+                        return res.status(500).json({
                             error: err.message
                         });
                     } else {
-                        res.status(201).json({
-                            message: 'Évaluation créée'
-                        });
+
                     }
                 });
             }
+        });
+        return  res.status(201).json({
+            message: 'Évaluations créée'
         });
     }
 }

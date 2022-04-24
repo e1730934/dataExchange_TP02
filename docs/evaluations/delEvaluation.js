@@ -1,7 +1,7 @@
 module.exports = {
     delete: {
         tags: [
-            "TP02 CRUD operations"
+            "Evaluation"
         ],
         description: "Delete an evaluation",
         operationId: "deleteEvaluation",

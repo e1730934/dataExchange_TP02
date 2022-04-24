@@ -1,7 +1,7 @@
 module.exports = {
     post: {
         tags: [
-            "TP02 CRUD operations"
+            "Student"
         ],
         summary: "Add student",
         description: "Ajout d'un étudiant",
@@ -36,26 +36,24 @@ module.exports = {
             }
         ],
         responses: {
-            "200": {
+            "201": {
                 description: "Student added",
-                // schema: {
-                //     type: "object",
-                //     $ref: "#/definitions/Student"
-                // }
+                schema: {
+                    type: "object",
+                    $ref: "#/components/schemas/AddStudent"
+                }
             },
             "400": {
                 description: "Bad request",
-                // schema: {
-                //     type: "object",
-                //     $ref: "#/definitions/Error"
-                // }
+                schema: {
+                    $ref: "#/components/schemas/Error"
+                }
             },
             "500": {
                 description: "Internal server error",
-                // schema: {
-                //     type: "object",
-                //     $ref: "#/definitions/Error"
-                // }
+                schema: {
+                    $ref: "#/components/schemas/Error"
+                }
             }
         },
     },

@@ -22,15 +22,14 @@ exports.addStudent = async (req,res) => {
         students.forEach(student => {
             db.run('INSERT INTO students (first_name, last_name, email) VALUES (?, ?, ?)', [student.first_name, student.last_name, student.email], (err) => {
                 if (err) {
-                    res.status(500).json({
+                    return res.status(500).json({
                         error: err.message
-                    });
-                } else {
-                    res.status(201).json({
-                        message: 'Étudiant créé'
                     });
                 }
             });
+        });
+        return res.status(201).json({
+            message: 'Étudiant créé'
         });
     }
 }

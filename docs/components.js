@@ -1,4 +1,4 @@
-module.exports = { //TODO - EDIT THIS TEMPLATE
+module.exports = {
     components: {
         schemas: {
             // id model
@@ -68,8 +68,6 @@ module.exports = { //TODO - EDIT THIS TEMPLATE
                     },
                 }
             },
-
-            // Todo input model
             UserInput: {
                 type: "object", // data type
                 properties: {
@@ -102,6 +100,15 @@ module.exports = { //TODO - EDIT THIS TEMPLATE
                         type: "string",
                         description: "Last name of the student",
                         example: "Doe"
+                    },
+                }
+            },
+            AddEvaluation:{
+                type: "object", // data type
+                properties:{
+                    name: {
+                        type: "string",
+                        description: "The name of the evaluation"
                     },
                 }
             },

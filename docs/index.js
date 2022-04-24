@@ -11,7 +11,7 @@ module.exports = {
   ...servers,
   ...tags,
   ...components,
-  ...users,
-  ...students,
-  // ...evaluations,
+  // ...users,
+  // ...students,
+  ...evaluations,
 };

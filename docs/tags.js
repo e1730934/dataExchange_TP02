@@ -1,7 +1,13 @@
 module.exports = {
     tags: [
-      {
-        name: "TP02 CRUD operations", // name of a tag
-      },
+        {
+            name: "Student", // name of a tag
+        },
+        {
+            name: "Users"
+        },
+        {
+            name: "Evaluation"
+        }
     ],
-  };
+};

@@ -1,7 +1,7 @@
 module.exports = {
     post: {
         tags: [
-            "TP02 CRUD operations"
+            "Users"
         ],
         summary: "Register",
         description: "",
@@ -19,7 +19,10 @@ module.exports = {
         ],
         responses: {
             201: {
-                description: "User created"
+                description: "User created",
+                schema: {
+                    $ref: "#/components/schemas/Register"
+                }
             }
         }
     },

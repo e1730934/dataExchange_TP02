@@ -24,15 +24,14 @@ exports.addResult = async (req,res) => {
             db.run(`INSERT INTO results (student_id, eval_id, note)
                     VALUES (?, ?, ?)`, [result.student_id, result.eval_id, result.note], (err) => {
                 if (err) {
-                    res.status(500).json({
+                    return res.status(500).json({
                         error: err.message
-                    });
-                } else {
-                    res.status(201).json({
-                        message: 'Résultats créé'
                     });
                 }
             });
+        })
+        return res.status(201).json({
+            message: 'Résultats créé'
         });
     }
 }

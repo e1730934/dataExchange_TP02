@@ -1,7 +1,7 @@
 module.exports = {
     delete:{
         tags: [
-            "TP02 CRUD operations"
+            "Student"
         ],
         description: "Delete a student",
         operationId: "deleteStudent",
@@ -17,5 +17,16 @@ module.exports = {
                 }
             }
         ],
+        responses: {
+            "201": {
+                description: "Student deleted",
+            },
+            "500": {
+                description: "Student not found",
+                schema: {
+                    $ref: "#/components/schemas/Error"
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 module.exports = {
     post: {
         tags: [
-            "TP02 CRUD operations"
+            "Evaluation"
         ],
         description: "Add a new evaluation",
         operationId: "addEvaluation",
@@ -13,7 +13,7 @@ module.exports = {
                 description: "The evaluation to add",
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Evaluation"
+                    $ref: "#/components/schemas/AddEvaluation"
                 },
                 properties:{
                   name: {
@@ -27,13 +27,19 @@ module.exports = {
             "201":{
                 description: "The evaluation was added",
                 schema: {
-                    $ref: "#/definitions/Evaluation"
+                    $ref: "#/components/schemas/AddEvaluation"
                 }
             },
             "400":{
                 description: "The evaluation was not added",
                 schema: {
-                    $ref: "#/definitions/Error"
+                    $ref: "#/components/schemas/Error"
+                }
+            },
+            "500":{
+                description: "The evaluation was not added",
+                schema: {
+                    $ref: "#/components/schemas/Error"
                 }
             }
         }
