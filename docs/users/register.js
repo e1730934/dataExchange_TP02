@@ -13,7 +13,7 @@ module.exports = {
                 description: "Add a user to the DB",
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Pet"
+                    $ref: "#/components/schemas/Register"
                 }
             }
         ],

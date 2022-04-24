@@ -26,7 +26,7 @@ module.exports = {
                     }
                 },
                 schema: {
-                    $ref: "#/definitions/Pet"
+                    $ref: "#/components/schemas/Login"
                 }
             }
         ],
