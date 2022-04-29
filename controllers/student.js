@@ -3,6 +3,17 @@ const jwt = require("jsonwebtoken");
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database/school.sqlite3');
 
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ dest: 'uploads/' , storage: storage}).single('file')
+
 exports.addStudent = async (req,res) => {
     if(!Array.isArray(req.body)) {
         const {first_name, last_name, email} = req.body;
@@ -79,5 +90,14 @@ exports.deleteStudent = async (req,res) => {
             });
         }
     });
-
+}
+exports.addStudentImage = async (req,res) => {
+    const {id} = req.params
+    db.run('UPDATE students SET (image) = (?) WHERE id = (?)', [`${req.file.path}`, id], () => {
+        upload(req,res, (err) =>{
+            if(err){
+                res.status(400).send("Something went wrong!");
+            } res.send(req.file);
+        })
+    });
 }
