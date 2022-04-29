@@ -5,16 +5,6 @@ const swaggerUi = require("swagger-ui-express");
 const docs = require('./docs');
 require("dotenv").config()
 
-const multer = require('multer')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-})
-const upload = multer({ dest: './uploads/' , storage: storage}).single('file')
 
 const app = express();
 const router = express.Router();
@@ -35,6 +25,8 @@ const {addEval, editEvaluation, delEval} = require("./controllers/evaluation");
 const {validationAddResult, addResultValidation, validationEditResult} = require("./middleware/validation/results");
 const {addResult, editResult, deleteResult} = require("./controllers/results");
 const {printImage} = require("./controllers/utilities");
+const {upload} = require("./middleware/multer/upload");
+const {errHandling} = require("./middleware/multer/errorHandling");
 
 
 router.use('/api-docs',swaggerUi.serve,swaggerUi.setup(docs));
@@ -56,6 +48,7 @@ router.delete('/delStudent/:id',auth,validationEditStudent, addStudentValidation
 router.delete('/delEvaluation/:id',auth,validationEditEvaluation, addEvalValidation, delEval) //Créer la route qui permet de supprimer une évaluation (http://localhost:3000/delEvaluation/:id)
 router.delete('/delResult/:eval_id',auth,validationEditResult, addResultValidation, deleteResult) //Créer la route qui permet de supprimer un résultat (http://localhost:3000/delResult/:id)
 
+router.use(errHandling)
 const server = app.listen(port, () => {
     console.log(`L'API peut maintenant recevoir des requêtes http://localhost:` + port);
 });
