@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const csv = require('csv-parser')
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database/school.sqlite3');
 require("dotenv").config();
@@ -65,4 +67,41 @@ exports.loginUser = async (req,res) =>{
             }
         }
     });
+}
+
+exports.insertUserCSV =  (req,res) =>{
+    let users = [];
+    fs.createReadStream(req.file.path)
+        .pipe(csv())
+        .on('data',  (row) => {
+            const user = {
+                name: row.name,
+                email: row.email,
+                password: bcrypt.hashSync(row.password, 10)
+            }
+            users.push(user);
+        })
+        .on('end',() => {
+            users.forEach(user => {
+                db.run('SELECT * FROM user WHERE email = ?', [user.email], (err, row) => {
+                    if (err) {
+                        res.status(500).json({
+                            error: err.message
+                        });
+                    } else if (!row) {
+                        db.run('INSERT INTO user (name, email, password) VALUES (?, ?, ?)', [user.name, user.email, user.password], (err) => {
+                            if (err) {
+                                res.status(500).json({
+                                    error: err.message
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    res.json({
+        success: true,
+        message: 'Utilisateur(s) créé'
+    })
 }
